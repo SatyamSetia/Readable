@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { getCategories } from '../actions/index';
 
 class App extends Component {
   render() {
@@ -13,9 +14,16 @@ class App extends Component {
 }
 
 function mapStateToProps (categories) {
+	console.log(categories)
 	return {
-		categories
+		categories: categories
 	}
 }
 
-export default connect(mapStateToProps)(App);
+function mapDispatchToProps(dispatch) {
+	return {
+		getAllCategories: dispatch(getCategories())
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

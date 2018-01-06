@@ -1,8 +1,8 @@
-import { GET_CATEGORIES } from '../actions/index';
+import { RECEIVE_CATEGORIES } from '../actions/index';
 
-export function fetchAllCategories(state=[], action) {
+export function fetchAllCategories(state={}, action) {
 	switch(action.type) {
-		case GET_CATEGORIES: return [action.payload];
+		case RECEIVE_CATEGORIES: return action.payload;
 		default: return state;
 	}
 }

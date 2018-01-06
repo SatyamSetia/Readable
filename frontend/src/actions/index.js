@@ -1,10 +1,18 @@
-import { fetchCategories } from '../utils';
+import { fetchCategories } from "../utils";
 
-export const GET_CATEGORIES = 'GET_CATEGORIES';
+export const RECEIVE_CATEGORIES = "RECEIVE_CATEGORIES";
+
+export function receiveCategories(categories) {
+	return {
+		type: RECEIVE_CATEGORIES,
+		payload: categories
+	};
+}
 
 export function getCategories() {
-	return {
-		type: GET_CATEGORIES,
-		payload: fetchCategories
-	}
+	return function(dispatch) {
+		return fetchCategories().then(categories =>
+			dispatch(receiveCategories(categories))
+		);
+	};
 }
