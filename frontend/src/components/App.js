@@ -13,10 +13,10 @@ class App extends Component {
   }
 }
 
-function mapStateToProps (categories) {
-	console.log(categories)
+function mapStateToProps ({fetchAllCategories}) {
+	//console.log(categories)
 	return {
-		categories: categories
+		categories: fetchAllCategories
 	}
 }
 
