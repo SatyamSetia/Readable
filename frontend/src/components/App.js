@@ -1,29 +1,17 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { getCategories } from '../actions/index';
+import React, { Component } from "react";
+import { BrowserRouter, Route } from "react-router-dom";
+import MainPage from "./MainPage";
 
 class App extends Component {
   render() {
-  	console.log('props', this.props)
     return (
-      <div>
-        Hello World!!
+      <div className="container">
+        <BrowserRouter>
+          <Route exact path="/" component={MainPage} />
+        </BrowserRouter>
       </div>
     );
   }
 }
 
-function mapStateToProps ({fetchAllCategories}) {
-	//console.log(categories)
-	return {
-		categories: fetchAllCategories
-	}
-}
-
-function mapDispatchToProps(dispatch) {
-	return {
-		getAllCategories: dispatch(getCategories())
-	}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

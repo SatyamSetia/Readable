@@ -1,4 +1,4 @@
-import { RECEIVE_CATEGORIES } from '../actions/index';
+import { RECEIVE_CATEGORIES } from '../actions/categories';
 
 export function fetchAllCategories(state={}, action) {
 	switch(action.type) {
