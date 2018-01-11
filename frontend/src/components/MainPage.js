@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getCategories } from "../actions/categories";
-import { getPosts } from "../actions/posts";
+//import { getAllPosts } from "../actions/posts";
+//import { getCategoryPosts } from "../actions/posts";
+import { getPosts } from '../actions/posts';
 import PostList from './PostList';
 import AppBar from "material-ui/AppBar";
 import FlatButton from 'material-ui/FlatButton';
@@ -9,14 +11,19 @@ import Subheader from 'material-ui/Subheader';
 
 class MainPage extends Component {
 
-	//const {categories} = this.props;
-
 	renderCategories(){
 		return this.props.categories.map(category => {
 			return (<li key={category.name} style={{float: 'left', listStyleType: 'none'}}>
-					<FlatButton label={category.name}/>
+					<FlatButton label={category.name} onClick={() => this.handleCategoryClick(category)}/>
 				</li>)
 		})
+	}
+
+	handleCategoryClick(category) {
+		this.props.history.push(category.path);
+		//console.log(this.props.posts)
+		this.props.getPosts(category.path);
+		//this.props.getPosts(category.path);
 	}
 
 	render() {
@@ -38,18 +45,20 @@ class MainPage extends Component {
 	}
 }
 
-function mapStateToProps({ fetchAllCategories, fetchAllPosts }) {
+function mapStateToProps({ fetchAllCategories, fetchPosts }) {
 	//console.log(categories)
 	return {
 		categories: fetchAllCategories,
-		posts: fetchAllPosts
+		posts: fetchPosts
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
 		getAllCategories: dispatch(getCategories()),
-		getAllPosts: dispatch(getPosts())
+		//getAllPosts: dispatch(getAllPosts()),
+		//getCategoryPosts: (category) => dispatch(getCategoryPosts(category))
+		getPosts: (category) => dispatch(getPosts(category))
 	};
 }
 
