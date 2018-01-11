@@ -14,16 +14,14 @@ class MainPage extends Component {
 	renderCategories(){
 		return this.props.categories.map(category => {
 			return (<li key={category.name} style={{float: 'left', listStyleType: 'none'}}>
-					<FlatButton label={category.name} onClick={() => this.handleCategoryClick(category)}/>
+					<FlatButton label={category.name} primary={true} onClick={() => this.handleCategoryClick(category)}/>
 				</li>)
 		})
 	}
 
 	handleCategoryClick(category) {
 		this.props.history.push(category.path);
-		//console.log(this.props.posts)
 		this.props.getPosts(category.path);
-		//this.props.getPosts(category.path);
 	}
 
 	render() {
@@ -38,8 +36,7 @@ class MainPage extends Component {
 				<ul>{this.renderCategories()}</ul>
 				<br/>
 				<br/>
-				<Subheader>Posts</Subheader>
-				<PostList/>
+				<PostList posts={this.props.posts}/>
 			</div>
 		);
 	}
