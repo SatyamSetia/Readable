@@ -8,6 +8,8 @@ import PostList from './PostList';
 import AppBar from "material-ui/AppBar";
 import FlatButton from 'material-ui/FlatButton';
 import Subheader from 'material-ui/Subheader';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 class MainPage extends Component {
 
@@ -37,6 +39,9 @@ class MainPage extends Component {
 				<br/>
 				<br/>
 				<PostList posts={this.props.posts}/>
+				<FloatingActionButton className="open md-fab md-fab-bottom-right" >
+      				<ContentAdd />
+    			</FloatingActionButton>
 			</div>
 		);
 	}
