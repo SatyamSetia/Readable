@@ -39,7 +39,7 @@ class MainPage extends Component {
 				<br/>
 				<br/>
 				<PostList posts={this.props.posts}/>
-				<FloatingActionButton className="open md-fab md-fab-bottom-right" >
+				<FloatingActionButton className="open" >
       				<ContentAdd />
     			</FloatingActionButton>
 			</div>

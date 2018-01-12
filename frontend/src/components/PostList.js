@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from 'react-router-dom';
 import { Card, CardActions, CardHeader } from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
 import Subheader from 'material-ui/Subheader';
@@ -23,7 +24,6 @@ class PostList extends Component {
 						subtitle={post.author}
 						actAsExpander={false}
 						showExpandableButton={false}
-						onClick = {() => console.log(post.id)}
 					/>						
 					<CardActions>
 						<div className="count">
@@ -33,7 +33,9 @@ class PostList extends Component {
 						<FlatButton label="Upvote" primary={true} onClick={() => console.log('upvote')}/>
 						<FlatButton label="Edit" primary={true} />
 						<FlatButton label="Delete" secondary={true} />
-						<img src={open} alt="open" style={{float: 'right', marginTop: '10px'}}/>
+						<Link to={`${post.category}/${post.id}`}>
+							<img src={open} alt="open" style={{float: 'right', marginTop: '10px'}}/>
+						</Link>
 					</CardActions>
 				</Card>
 			</li>
