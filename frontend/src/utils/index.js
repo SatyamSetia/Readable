@@ -24,3 +24,7 @@ export const fetchAllPosts = () =>
 export const fetchCategoryPosts = (category) =>
 	fetch(`${url}/${category}/posts`,{ headers })
 		.then(res => res.json())
+
+export const fetchPost = (postId) =>
+	fetch(`${url}/posts/${postId}`, { headers })
+		.then(res => res.json());

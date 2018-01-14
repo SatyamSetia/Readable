@@ -1,7 +1,8 @@
-import { fetchAllPosts, fetchCategoryPosts } from "../utils";
+import { fetchAllPosts, fetchCategoryPosts, fetchPost } from "../utils";
 
 export const RECEIVE_ALL_POSTS = "RECEIVE_ALL_POSTS";
 export const RECEIVE_CATEGORY_POSTS = "RECEIVE_CATEGORY_POSTS";
+export const RECEIVE_POST = "RECEIVE_POST";
 
 export function receiveAllPosts(posts) {
 	return {
@@ -35,4 +36,18 @@ export function getCategoryPosts(category) {
 
 export function getPosts(category) {
 	return category?getCategoryPosts(category):getAllPosts();
+}
+
+export function recievePost(post) {
+	return {
+		type: RECEIVE_POST,
+		payload: post
+	}
+}
+
+export function getPost(postId) {
+	return function(dispatch) {
+		return fetchPost(postId).then(post =>
+			dispatch(recievePost(post)))
+	};
 }
