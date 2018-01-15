@@ -20,7 +20,7 @@ body {
 
 .paper{
   height: auto;
-  width: 80%;
+  width: 90%;
   margin: 20px auto;
   padding: 10px;
   display: block
@@ -33,4 +33,22 @@ body {
 
 .post-title{
 	font-size: 20px;
+}
+
+.comment-section{
+	margin: 0 15px 5px 15px;
+}
+
+.comment-author{
+	color: #acb0b0;
+	font-size: 15px;
+}
+
+.comment-body{
+	font-size: 15px;
+}
+
+.comment-vote-score{
+	color: #acb0b0;
+	font-size: 12px;
 }
