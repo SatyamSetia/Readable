@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
 import { getCategories } from "../actions/categories";
 //import { getAllPosts } from "../actions/posts";
@@ -23,7 +24,11 @@ class MainPage extends Component {
 
 	handleCategoryClick(category) {
 		this.props.history.push(category.path);
-		this.props.getPosts(category.path);
+		this.props.getPosts(category.path);		
+	}
+
+	componentDidMount() {
+		this.props.getPosts(this.props.match.url.substr(1));
 	}
 
 	render() {
@@ -39,9 +44,11 @@ class MainPage extends Component {
 				<br/>
 				<br/>
 				<PostList posts={this.props.posts}/>
-				<FloatingActionButton className="open" >
-      				<ContentAdd />
-    			</FloatingActionButton>
+				<Link to='/create'>
+					<FloatingActionButton className="open" >
+      					<ContentAdd />
+    				</FloatingActionButton>
+    			</Link>
 			</div>
 		);
 	}
