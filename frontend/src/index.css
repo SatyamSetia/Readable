@@ -52,3 +52,11 @@ body {
 	color: #acb0b0;
 	font-size: 12px;
 }
+
+.add-post-form{
+	margin: 0 20px 20px 20px;
+}
+
+.add-post-form-button{
+	margin-right: 20px;
+}

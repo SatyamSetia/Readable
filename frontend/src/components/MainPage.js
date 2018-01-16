@@ -35,20 +35,23 @@ class MainPage extends Component {
 		console.log("props", this.props);
 		return (
 			<div>
-				<AppBar
-					title="Readable"
-					iconClassNameRight="muidocs-icon-navigation-expand-more"
-				/>
-				<Subheader>Categories</Subheader>
-				<ul>{this.renderCategories()}</ul>
-				<br/>
-				<br/>
-				<PostList posts={this.props.posts}/>
-				<Link to='/create'>
-					<FloatingActionButton className="open" >
-      					<ContentAdd />
-    				</FloatingActionButton>
-    			</Link>
+				<div>
+					<AppBar
+						title="Readable"
+					/>
+					<Subheader>Categories</Subheader>
+					<ul>{this.renderCategories()}</ul>
+					<br/>
+					<br/>
+				</div>
+				<div>
+					<PostList posts={this.props.posts}/>
+					<Link to='/create'>
+						<FloatingActionButton className="open" >
+	      					<ContentAdd />
+	    				</FloatingActionButton>
+	    			</Link>
+    			</div>
 			</div>
 		);
 	}

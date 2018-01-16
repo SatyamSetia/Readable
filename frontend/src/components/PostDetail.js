@@ -51,7 +51,6 @@ class PostList extends Component {
 			<div>
 				<AppBar
 					title="Readable"
-					iconClassNameRight="muidocs-icon-navigation-expand-more"
 					iconElementLeft={
 						<IconButton onClick={() => this.props.history.goBack()}>
 							<NavigationClose />
