@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import CommentDetail from "./CommentDetail";
 import { connect } from "react-redux";
-import { getPost } from "../actions/posts";
+import { getPost, votePost } from "../actions/posts";
 import { getAllComments } from "../actions/comments";
 import AppBar from "material-ui/AppBar";
 import NavigationClose from "material-ui/svg-icons/navigation/close";
@@ -70,7 +70,7 @@ class PostList extends Component {
 					<FlatButton
 						label="Upvote"
 						primary={true}
-						onClick={() => console.log("upvote")}
+						onClick={() => {this.props.votePost(post.id, 'upVote')}}
 					/>
 					<FlatButton label="Edit" primary={true} />
 					<FlatButton label="Delete" secondary={true} />
@@ -123,6 +123,7 @@ function mapStateToProps({ fetchPost, fetchAllComments }) {
 function mapDispatchToProps(dispatch) {
 	return {
 		getPost: postId => dispatch(getPost(postId)),
+		votePost: (postId, vote) => dispatch(votePost(postId,vote)),
 		getAllComments: postId => dispatch(getAllComments(postId))
 	};
 }

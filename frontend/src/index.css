@@ -4,6 +4,12 @@ body {
 	font-family: sans-serif;
 }
 
+.post-list{
+	width: 95%;
+	margin-bottom: 20px;
+	list-style-type: none;
+}
+
 .count {
 	color: #acb0b0;
 	font-size: 11px;
