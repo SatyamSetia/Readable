@@ -14,10 +14,6 @@ import ContentAdd from "material-ui/svg-icons/content/add";
 
 class MainPage extends Component {
 
-	state = {
-		flag: true
-	}
-
 	renderCategories() {
 		return this.props.categories.map(category => {
 			return (
@@ -45,8 +41,6 @@ class MainPage extends Component {
 	}
 
 	renderPostList() {
-		console.log('MainPage posts',this.props.posts)
-		console.log(this.state.flag)
 		return this.props.posts.map(post => 
 			<li
 				key={post.id}
@@ -58,7 +52,6 @@ class MainPage extends Component {
 	}
 
 	render() {
-		//console.log("props", this.props);
 		return (
 			<div>
 				<div>
