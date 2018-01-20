@@ -1,4 +1,4 @@
-import { fetchAllPosts, fetchCategoryPosts, fetchPost, votePostRequest } from "../utils";
+import { fetchAllPosts, fetchCategoryPosts, fetchPost, votePostRequest, addPostRequest } from "../utils";
 
 export const RECEIVE_ALL_POSTS = "RECEIVE_ALL_POSTS";
 export const RECEIVE_CATEGORY_POSTS = "RECEIVE_CATEGORY_POSTS";
@@ -56,6 +56,13 @@ export function getPost(postId) {
 export function votePost(postId, vote) {
 	return function(dispatch) {
 		return votePostRequest(postId, vote).then(post =>
+			dispatch(recievePost(post)))
+	};
+}
+
+export function addPost(post) {
+	return function(dispatch) {
+		return addPostRequest(post).then(post =>
 			dispatch(recievePost(post)))
 	};
 }

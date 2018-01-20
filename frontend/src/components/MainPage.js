@@ -13,7 +13,6 @@ import FloatingActionButton from "material-ui/FloatingActionButton";
 import ContentAdd from "material-ui/svg-icons/content/add";
 
 class MainPage extends Component {
-
 	renderCategories() {
 		return this.props.categories.map(category => {
 			return (
@@ -41,14 +40,13 @@ class MainPage extends Component {
 	}
 
 	renderPostList() {
-		return this.props.posts.map(post => 
-			<li
-				key={post.id}
-				className="post-list"
-			>
-				<PostListItem post={post} postUpdate={() => this.props.getPosts(this.props.match.url.substr(1))}/>
+		return this.props.posts.map(post => (
+			<li key={post.id} className="post-list">
+				<PostListItem
+					post={post}
+				/>
 			</li>
-		);
+		));
 	}
 
 	render() {
@@ -63,9 +61,7 @@ class MainPage extends Component {
 				</div>
 				<div>
 					<Subheader>Posts</Subheader>
-					<ul>
-						{this.renderPostList()}
-					</ul>
+					<ul>{this.renderPostList()}</ul>
 					<Link to="/create">
 						<FloatingActionButton className="open">
 							<ContentAdd />

@@ -41,3 +41,13 @@ export const votePostRequest = (postId, vote) =>
 			option: vote
 		})
 	}).then(res => res.json())
+
+export const addPostRequest = (post) =>
+	fetch(`${url}/posts`,{
+		method: 'POST',
+		headers,
+		body: JSON.stringify({
+			...post,
+			timestamp: Date.now()
+		})
+	}).then(res => res.json())

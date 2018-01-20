@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import uuid from "uuid";
+
 import { getCategories } from "../actions/categories";
+import { addPost } from "../actions/posts";
+
 import AppBar from "material-ui/AppBar";
 import NavigationClose from "material-ui/svg-icons/navigation/close";
 import IconButton from "material-ui/IconButton";
@@ -10,20 +14,68 @@ import TextField from "material-ui/TextField";
 import SelectField from "material-ui/SelectField";
 import MenuItem from "material-ui/MenuItem";
 import RaisedButton from "material-ui/RaisedButton";
+import Snackbar from "material-ui/Snackbar";
 
 class AddNewPost extends Component {
 	state = {
-		value: 0
+		category: "",
+		author: "",
+		title: "",
+		body: "",
+		snackbarOpen: false,
+		message: ""
 	};
 
-	handleChange = (event, index, value) => this.setState({ value });
+	validate() {
+		const { category, author, title, body } = this.state;
+		if (category === "" || author === "" || title === "" || body === "") {
+			return false;
+		}
+		return true;
+	}
+
+	handleChange = (event, index, category) => this.setState({ category });
+
+	handleSubmit() {
+		if (!this.validate()) {
+			return this.setState({
+				snackbarOpen: true,
+				message: "Can't submit, all fields are required"
+			});
+		}
+		this.props
+			.addPost({
+				id: uuid.v4(),
+				category: this.state.category,
+				title: this.state.title,
+				author: this.state.author,
+				body: this.state.body
+			})
+			.then(post =>
+				this.setState({
+					snackbarOpen: true,
+					message: `A new post by ${post.payload.author} is created`,
+					title: '',
+					author: '',
+					category: '',
+					body: ''
+				})
+			);
+		//console.log('submit')
+	}
+
+	handleSnackbarClose = () => {
+		this.setState({
+			snackbarOpen: false
+		});
+	};
 
 	renderCategoryMenu(categories) {
 		return categories.map((category, index) => {
 			return (
 				<MenuItem
 					key={index}
-					value={index}
+					value={category.name}
 					primaryText={
 						category.name.charAt(0).toUpperCase() +
 						category.name.slice(1)
@@ -34,7 +86,7 @@ class AddNewPost extends Component {
 	}
 
 	render() {
-		console.log(this.props);
+		//console.log(this.props);
 		return (
 			<div>
 				<AppBar
@@ -48,12 +100,17 @@ class AddNewPost extends Component {
 				<Paper className="paper" zDepth={1}>
 					<Subheader>Add New Post</Subheader>
 					<div className="add-post-form">
-						<TextField floatingLabelText="Author" />
+						<TextField
+							floatingLabelText="Author"
+							value={this.state.author}
+							onChange={e =>
+								this.setState({ author: e.target.value })}
+						/>
 						<br />
 						<br />
 						<SelectField
 							floatingLabelText="Category"
-							value={this.state.value}
+							value={this.state.category}
 							onChange={this.handleChange}
 						>
 							<MenuItem
@@ -63,7 +120,12 @@ class AddNewPost extends Component {
 							{this.renderCategoryMenu(this.props.categories)}
 						</SelectField>
 						<br />
-						<TextField floatingLabelText="Title" />
+						<TextField
+							floatingLabelText="Title"
+							value={this.state.title}
+							onChange={e =>
+								this.setState({ title: e.target.value })}
+						/>
 						<br />
 						<TextField
 							floatingLabelText="Write Something"
@@ -71,13 +133,36 @@ class AddNewPost extends Component {
 							multiLine={true}
 							rows={2}
 							rowsMax={4}
+							value={this.state.body}
+							onChange={e =>
+								this.setState({ body: e.target.value })}
 						/>
 						<br />
 						<br />
-						<RaisedButton label="Clear" className="add-post-form-button"/>
-						<RaisedButton label="Submit" className="add-post-form-button"/>
+						<RaisedButton
+							label="Clear"
+							className="add-post-form-button"
+							onClick={() =>
+								this.setState({
+									category: "",
+									author: "",
+									title: "",
+									body: ""
+								})}
+						/>
+						<RaisedButton
+							label="Submit"
+							className="add-post-form-button"
+							onClick={() => this.handleSubmit()}
+						/>
 					</div>
 				</Paper>
+				<Snackbar
+					open={this.state.snackbarOpen}
+					message={this.state.message}
+					autoHideDuration={4000}
+					onRequestClose={this.handleSnackbarClose}
+				/>
 			</div>
 		);
 	}
@@ -91,7 +176,8 @@ function mapStateToProps({ fetchAllCategories }) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		getAllCategories: dispatch(getCategories())
+		getAllCategories: dispatch(getCategories()),
+		addPost: post => dispatch(addPost(post))
 	};
 }
 

@@ -13,7 +13,6 @@ import edit from "../icons/ic_edit_black_24px.svg";
 import deleteIcon from "../icons/ic_delete_black_24px.svg";
 
 import { Card, CardActions, CardHeader } from "material-ui/Card";
-import FlatButton from "material-ui/FlatButton";
 
 class PostListItem extends Component {
 	state = {
@@ -26,65 +25,59 @@ class PostListItem extends Component {
 
 	upVotePost(postId) {
 		if (!this.state.upVote) {
-			if(this.state.downVote) {
-				this.props.votePost(postId, "upVote").then((post) => this.setState({post: post.payload}));
-				//this.downVotePost(postId);
+			if (this.state.downVote) {
+				this.props
+					.votePost(postId, "upVote")
+					.then(post => this.setState({ post: post.payload }));
 			}
-			this.props
-				.votePost(postId, "upVote")
-				.then(post =>
-					this.setState({
-						post: post.payload,
-						upVote: true,
-						upVoteIcon: upvote,
-						downVote: false,
-						downVoteIcon: downvoteOutline
-					})
-				);
+			this.props.votePost(postId, "upVote").then(post =>
+				this.setState({
+					post: post.payload,
+					upVote: true,
+					upVoteIcon: upvote,
+					downVote: false,
+					downVoteIcon: downvoteOutline
+				})
+			);
 		} else {
-			this.props
-				.votePost(postId, "downVote")
-				.then(post =>
-					this.setState({
-						post: post.payload,
-						upVote: false,
-						upVoteIcon: upvoteOutline,
-						downVote: false,
-						downVoteIcon: downvoteOutline
-					})
-				);
+			this.props.votePost(postId, "downVote").then(post =>
+				this.setState({
+					post: post.payload,
+					upVote: false,
+					upVoteIcon: upvoteOutline,
+					downVote: false,
+					downVoteIcon: downvoteOutline
+				})
+			);
 		}
 	}
 
 	downVotePost(postId) {
 		if (!this.state.downVote) {
-			if(this.state.upVote){
-				this.props.votePost(postId, "downVote").then((post) => this.setState({post: post.payload}));
-				//this.upVotePost(postId)
+			if (this.state.upVote) {
+				this.props
+					.votePost(postId, "downVote")
+					.then(post => this.setState({ post: post.payload }));
 			}
-			this.props
-				.votePost(postId, "downVote")
-				.then(post =>
-					this.setState({
-						post: post.payload,
-						downVote: true,
-						downVoteIcon: downvote,
-						upVote: false,
-						upVoteIcon: upvoteOutline 
-					})
-				);
+			this.props.votePost(postId, "downVote").then(post =>
+				this.setState({
+					post: post.payload,
+					downVote: true,
+					downVoteIcon: downvote,
+					upVote: false,
+					upVoteIcon: upvoteOutline
+				})
+			);
 		} else {
-			this.props
-				.votePost(postId, "upVote")
-				.then(post =>
-					this.setState({
-						post: post.payload,
-						downVote: false,
-						downVoteIcon: downvoteOutline,
-						upVote: false,
-						upVoteIcon: upvoteOutline
-					})
-				);
+			this.props.votePost(postId, "upVote").then(post =>
+				this.setState({
+					post: post.payload,
+					downVote: false,
+					downVoteIcon: downvoteOutline,
+					upVote: false,
+					upVoteIcon: upvoteOutline
+				})
+			);
 		}
 	}
 
@@ -110,25 +103,29 @@ class PostListItem extends Component {
 							{post.voteScore} votes, {post.commentCount} comments
 						</div>
 						<hr style={{ opacity: "0.2" }} />
-						<img
-							src={this.state.upVoteIcon}
-							alt="upvote"
-							onClick={() => this.upVotePost(post.id)}
-						/>
-						<img
-							src={this.state.downVoteIcon}
-							alt="downvote"
-							onClick={() => this.downVotePost(post.id)}
-						/>
-						<img src={edit} alt="edit" onClick={() => {}} />
-						<img src={deleteIcon} alt="delete" onClick={() => {}} />
-						<Link to={`${post.category}/${post.id}`}>
+						<div className="button-section">
 							<img
-								src={open}
-								alt="open"
-								style={{ float: "right", marginTop: "10px" }}
+								src={this.state.upVoteIcon}
+								alt="upvote"
+								className="icon-button"
+								onClick={() => this.upVotePost(post.id)}
 							/>
-						</Link>
+							<img
+								src={this.state.downVoteIcon}
+								alt="downvote"
+								className="icon-button"
+								onClick={() => this.downVotePost(post.id)}
+							/>
+							<img src={edit} alt="edit" className="icon-button" onClick={() => {}} />
+							<img src={deleteIcon} alt="delete" className="icon-button" onClick={() => {}} />
+							<Link to={`${post.category}/${post.id}`}>
+								<img
+									src={open}
+									alt="open"
+									style={{ float: "right" }}
+								/>
+							</Link>
+						</div>
 					</CardActions>
 				</Card>
 			</div>
