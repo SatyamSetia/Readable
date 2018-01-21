@@ -51,3 +51,13 @@ export const addPostRequest = (post) =>
 			timestamp: Date.now()
 		})
 	}).then(res => res.json())
+
+export const editPostRequest = (postId,title,body) =>
+	fetch(`${url}/posts/${postId}`,{
+		method:'PUT',
+		headers,
+		body: JSON.stringify({
+			title: title,
+			body: body
+		})
+	}).then(res => res.json())

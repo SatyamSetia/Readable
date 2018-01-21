@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 import CommentDetail from "./CommentDetail";
 import { getPost, votePost } from "../actions/posts";
@@ -139,28 +139,43 @@ class PostList extends Component {
 					</div>
 					<hr style={{ opacity: "0.2" }} />
 					<div className="button-section">
+						<img
+							src={this.state.upVoteIcon}
+							alt="upvote"
+							className="icon-button"
+							onClick={() => this.upVotePost(post.id)}
+						/>
+						<img
+							src={this.state.downVoteIcon}
+							alt="downvote"
+							className="icon-button"
+							onClick={() => this.downVotePost(post.id)}
+						/>
+						<Link to={`/edit/${post.id}`}>
 							<img
-								src={this.state.upVoteIcon}
-								alt="upvote"
+								src={edit}
+								alt="edit"
 								className="icon-button"
-								onClick={() => this.upVotePost(post.id)}
 							/>
-							<img
-								src={this.state.downVoteIcon}
-								alt="downvote"
-								className="icon-button"
-								onClick={() => this.downVotePost(post.id)}
-							/>
-							<Link to={`/edit/${post.id}`}>
-								<img src={edit} alt="edit" className="icon-button" />
-							</Link>
-							<img src={deleteIcon} alt="delete" className="icon-button" onClick={() => {}} />
-						</div>
+						</Link>
+						<img
+							src={deleteIcon}
+							alt="delete"
+							className="icon-button"
+							onClick={() => {}}
+						/>
+					</div>
 					<Subheader>Comments</Subheader>
 					<div className="comment-section">
-						<ul style={{paddingLeft: '0px', marginTop: '0px'}}>
+						<ul style={{ paddingLeft: "0px", marginTop: "0px" }}>
 							{comments.map(comment => (
-								<li key={comment.id} style={{listStyleType: 'none', marginBottom: '15px'}}>
+								<li
+									key={comment.id}
+									style={{
+										listStyleType: "none",
+										marginBottom: "15px"
+									}}
+								>
 									<CommentDetail comment={comment} />
 								</li>
 							))}
@@ -205,7 +220,7 @@ function mapStateToProps({ fetchPost, fetchAllComments }) {
 function mapDispatchToProps(dispatch) {
 	return {
 		getPost: postId => dispatch(getPost(postId)),
-		votePost: (postId, vote) => dispatch(votePost(postId,vote)),
+		votePost: (postId, vote) => dispatch(votePost(postId, vote)),
 		getAllComments: postId => dispatch(getAllComments(postId))
 	};
 }

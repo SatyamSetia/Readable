@@ -18,8 +18,8 @@ body {
 
 .open {
 	position: fixed;
-	right: 24px;
-	bottom: 24px;
+	right: 36px;
+	bottom: 42px;
 	margin-bottom: 0;
 	z-index: 998;
 }

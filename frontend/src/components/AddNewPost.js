@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import uuid from "uuid";
 
 import { getCategories } from "../actions/categories";
-import { addPost, getPost } from "../actions/posts";
+import { addPost, getPost, editPost } from "../actions/posts";
 
 import AppBar from "material-ui/AppBar";
 import NavigationClose from "material-ui/svg-icons/navigation/close";
@@ -45,6 +45,18 @@ class AddNewPost extends Component {
 				message: "Can't submit, all fields are required"
 			});
 		}
+		if (this.state.editMode) {
+			return this.props.editPost(
+				this.props.match.params.postId,
+				this.state.title,
+				this.state.body
+			).then(post =>
+				this.setState({
+					snackbarOpen: true,
+					message: `A post by ${post.payload.author} is updated`
+				})
+			);
+		}
 		this.props
 			.addPost({
 				id: uuid.v4(),
@@ -73,16 +85,16 @@ class AddNewPost extends Component {
 	};
 
 	handleClearClick() {
-		if(!this.props.match.params.postId){
+		if (!this.props.match.params.postId) {
 			this.setState({
 				author: "",
 				category: ""
-			})
+			});
 		}
 		this.setState({
 			title: "",
 			body: ""
-		})
+		});
 	}
 
 	renderCategoryMenu(categories) {
@@ -102,18 +114,18 @@ class AddNewPost extends Component {
 
 	componentDidMount() {
 		if (this.props.match.params.postId) {
-			this.props
-				.getPost(this.props.match.params.postId)
-				.then(post => this.setState({
+			this.props.getPost(this.props.match.params.postId).then(post =>
+				this.setState({
 					category: post.payload.category,
 					author: post.payload.author,
 					title: post.payload.title,
 					body: post.payload.body,
 					heading: "Edit Post",
 					editMode: true
-				}));
+				})
+			);
 		} else {
-			this.setState({heading: "Add new Post"})
+			this.setState({ heading: "Add new Post" });
 		}
 	}
 
@@ -208,7 +220,9 @@ function mapDispatchToProps(dispatch) {
 	return {
 		getPost: postId => dispatch(getPost(postId)),
 		getAllCategories: dispatch(getCategories()),
-		addPost: post => dispatch(addPost(post))
+		addPost: post => dispatch(addPost(post)),
+		editPost: (postId, title, body) =>
+			dispatch(editPost(postId, title, body))
 	};
 }
 
