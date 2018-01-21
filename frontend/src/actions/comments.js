@@ -1,6 +1,7 @@
-import { fetchAllComments } from '../utils/index';
+import { fetchAllComments, voteCommentRequest } from '../utils/index';
 
 export const RECEIVE_ALL_COMMENTS = 'RECEIVE_ALL_COMMENTS';
+export const RECEIVE_COMMENT = 'RECEIVE_COMMENT';
 
 export function receiveAllComments(comments) {
 	return {
@@ -9,10 +10,25 @@ export function receiveAllComments(comments) {
 	}
 }
 
+export function recieveComment(comment) {
+	return {
+		type: RECEIVE_COMMENT,
+		payload: comment
+	}
+}
+
 export function getAllComments(postId) {
 	return function(dispatch) {
 		return fetchAllComments(postId).then(comments =>
 			dispatch(receiveAllComments(comments))
+		);
+	}
+}
+
+export function voteComment(commentId, vote) {
+	return function(dispatch) {
+		return voteCommentRequest(commentId, vote).then(comment =>
+			dispatch(recieveComment(comment))
 		);
 	}
 }

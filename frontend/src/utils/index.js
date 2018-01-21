@@ -61,3 +61,12 @@ export const editPostRequest = (postId,title,body) =>
 			body: body
 		})
 	}).then(res => res.json())
+
+export const voteCommentRequest = (commentId, vote) =>
+	fetch(`${url}/comments/${commentId}`, {
+		method: 'POST',
+		headers,
+		body: JSON.stringify({
+			option: vote
+		})
+	}).then(res => res.json())
