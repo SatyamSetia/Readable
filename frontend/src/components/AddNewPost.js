@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import uuid from "uuid";
 
 import { getCategories } from "../actions/categories";
-import { addPost } from "../actions/posts";
+import { addPost, getPost } from "../actions/posts";
 
 import AppBar from "material-ui/AppBar";
 import NavigationClose from "material-ui/svg-icons/navigation/close";
@@ -18,12 +18,14 @@ import Snackbar from "material-ui/Snackbar";
 
 class AddNewPost extends Component {
 	state = {
+		editMode: false,
 		category: "",
 		author: "",
 		title: "",
 		body: "",
 		snackbarOpen: false,
-		message: ""
+		message: "",
+		heading: ""
 	};
 
 	validate() {
@@ -55,10 +57,10 @@ class AddNewPost extends Component {
 				this.setState({
 					snackbarOpen: true,
 					message: `A new post by ${post.payload.author} is created`,
-					title: '',
-					author: '',
-					category: '',
-					body: ''
+					title: "",
+					author: "",
+					category: "",
+					body: ""
 				})
 			);
 		//console.log('submit')
@@ -69,6 +71,19 @@ class AddNewPost extends Component {
 			snackbarOpen: false
 		});
 	};
+
+	handleClearClick() {
+		if(!this.props.match.params.postId){
+			this.setState({
+				author: "",
+				category: ""
+			})
+		}
+		this.setState({
+			title: "",
+			body: ""
+		})
+	}
 
 	renderCategoryMenu(categories) {
 		return categories.map((category, index) => {
@@ -85,8 +100,25 @@ class AddNewPost extends Component {
 		});
 	}
 
+	componentDidMount() {
+		if (this.props.match.params.postId) {
+			this.props
+				.getPost(this.props.match.params.postId)
+				.then(post => this.setState({
+					category: post.payload.category,
+					author: post.payload.author,
+					title: post.payload.title,
+					body: post.payload.body,
+					heading: "Edit Post",
+					editMode: true
+				}));
+		} else {
+			this.setState({heading: "Add new Post"})
+		}
+	}
+
 	render() {
-		//console.log(this.props);
+		console.log(this.props);
 		return (
 			<div>
 				<AppBar
@@ -98,11 +130,12 @@ class AddNewPost extends Component {
 					}
 				/>
 				<Paper className="paper" zDepth={1}>
-					<Subheader>Add New Post</Subheader>
+					<Subheader>{this.state.heading}</Subheader>
 					<div className="add-post-form">
 						<TextField
 							floatingLabelText="Author"
 							value={this.state.author}
+							disabled={this.state.editMode}
 							onChange={e =>
 								this.setState({ author: e.target.value })}
 						/>
@@ -111,6 +144,7 @@ class AddNewPost extends Component {
 						<SelectField
 							floatingLabelText="Category"
 							value={this.state.category}
+							disabled={this.state.editMode}
 							onChange={this.handleChange}
 						>
 							<MenuItem
@@ -122,6 +156,7 @@ class AddNewPost extends Component {
 						<br />
 						<TextField
 							floatingLabelText="Title"
+							fullWidth={true}
 							value={this.state.title}
 							onChange={e =>
 								this.setState({ title: e.target.value })}
@@ -142,13 +177,7 @@ class AddNewPost extends Component {
 						<RaisedButton
 							label="Clear"
 							className="add-post-form-button"
-							onClick={() =>
-								this.setState({
-									category: "",
-									author: "",
-									title: "",
-									body: ""
-								})}
+							onClick={() => this.handleClearClick()}
 						/>
 						<RaisedButton
 							label="Submit"
@@ -168,14 +197,16 @@ class AddNewPost extends Component {
 	}
 }
 
-function mapStateToProps({ fetchAllCategories }) {
+function mapStateToProps({ fetchPost, fetchAllCategories }) {
 	return {
+		post: fetchPost,
 		categories: fetchAllCategories.slice(1)
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
+		getPost: postId => dispatch(getPost(postId)),
 		getAllCategories: dispatch(getCategories()),
 		addPost: post => dispatch(addPost(post))
 	};

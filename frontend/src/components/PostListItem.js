@@ -116,9 +116,11 @@ class PostListItem extends Component {
 								className="icon-button"
 								onClick={() => this.downVotePost(post.id)}
 							/>
-							<img src={edit} alt="edit" className="icon-button" onClick={() => {}} />
+							<Link to={`/edit/${post.id}`} >
+								<img src={edit} alt="edit" className="icon-button"/>
+							</Link>
 							<img src={deleteIcon} alt="delete" className="icon-button" onClick={() => {}} />
-							<Link to={`${post.category}/${post.id}`}>
+							<Link to={`${post.category}/${post.id}`} >
 								<img
 									src={open}
 									alt="open"

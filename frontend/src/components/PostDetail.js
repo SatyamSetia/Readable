@@ -1,8 +1,11 @@
 import React, { Component } from "react";
-import CommentDetail from "./CommentDetail";
 import { connect } from "react-redux";
+import { Link } from 'react-router-dom';
+
+import CommentDetail from "./CommentDetail";
 import { getPost, votePost } from "../actions/posts";
 import { getAllComments } from "../actions/comments";
+
 import AppBar from "material-ui/AppBar";
 import NavigationClose from "material-ui/svg-icons/navigation/close";
 import IconButton from "material-ui/IconButton";
@@ -12,18 +15,86 @@ import Subheader from "material-ui/Subheader";
 import TextField from "material-ui/TextField";
 import Dialog from "material-ui/Dialog";
 import RaisedButton from "material-ui/RaisedButton";
+import upvote from "../icons/ic_thumb_up_black_24px.svg";
+import upvoteOutline from "../icons/thumb-up-outline.svg";
+import downvote from "../icons/ic_thumb_down_black_24px.svg";
+import downvoteOutline from "../icons/thumb-down-outline.svg";
+import edit from "../icons/ic_edit_black_24px.svg";
+import deleteIcon from "../icons/ic_delete_black_24px.svg";
 
 class PostList extends Component {
 	state = {
-		open: false
+		dialogOpen: false,
+		upVote: false,
+		upVoteIcon: upvoteOutline,
+		downVote: false,
+		downVoteIcon: downvoteOutline
 	};
 
+	upVotePost(postId) {
+		if (!this.state.upVote) {
+			if (this.state.downVote) {
+				this.props
+					.votePost(postId, "upVote")
+					.then(post => this.setState({ post: post.payload }));
+			}
+			this.props.votePost(postId, "upVote").then(post =>
+				this.setState({
+					post: post.payload,
+					upVote: true,
+					upVoteIcon: upvote,
+					downVote: false,
+					downVoteIcon: downvoteOutline
+				})
+			);
+		} else {
+			this.props.votePost(postId, "downVote").then(post =>
+				this.setState({
+					post: post.payload,
+					upVote: false,
+					upVoteIcon: upvoteOutline,
+					downVote: false,
+					downVoteIcon: downvoteOutline
+				})
+			);
+		}
+	}
+
+	downVotePost(postId) {
+		if (!this.state.downVote) {
+			if (this.state.upVote) {
+				this.props
+					.votePost(postId, "downVote")
+					.then(post => this.setState({ post: post.payload }));
+			}
+			this.props.votePost(postId, "downVote").then(post =>
+				this.setState({
+					post: post.payload,
+					downVote: true,
+					downVoteIcon: downvote,
+					upVote: false,
+					upVoteIcon: upvoteOutline
+				})
+			);
+		} else {
+			this.props.votePost(postId, "upVote").then(post =>
+				this.setState({
+					post: post.payload,
+					downVote: false,
+					downVoteIcon: downvoteOutline,
+					upVote: false,
+					upVoteIcon: upvoteOutline
+				})
+			);
+		}
+	}
+
 	handleOpen = () => {
-		this.setState({ open: true });
+		this.setState({ dialogOpen: true });
 	};
 
 	handleClose = () => {
-		this.setState({ open: false });
+		this.setState({ dialogOpen: false });
 	};
 
 	componentDidMount() {
@@ -67,13 +138,24 @@ class PostList extends Component {
 						{post.voteScore} votes, {post.commentCount} comments
 					</div>
 					<hr style={{ opacity: "0.2" }} />
-					<FlatButton
-						label="Upvote"
-						primary={true}
-						onClick={() => {this.props.votePost(post.id, 'upVote')}}
-					/>
-					<FlatButton label="Edit" primary={true} />
-					<FlatButton label="Delete" secondary={true} />
+					<div className="button-section">
+							<img
+								src={this.state.upVoteIcon}
+								alt="upvote"
+								className="icon-button"
+								onClick={() => this.upVotePost(post.id)}
+							/>
+							<img
+								src={this.state.downVoteIcon}
+								alt="downvote"
+								className="icon-button"
+								onClick={() => this.downVotePost(post.id)}
+							/>
+							<Link to={`/edit/${post.id}`}>
+								<img src={edit} alt="edit" className="icon-button" />
+							</Link>
+							<img src={deleteIcon} alt="delete" className="icon-button" onClick={() => {}} />
+						</div>
 					<Subheader>Comments</Subheader>
 					<div className="comment-section">
 						<ul style={{paddingLeft: '0px', marginTop: '0px'}}>
@@ -91,7 +173,7 @@ class PostList extends Component {
 							title="Add new Comment"
 							actions={actions}
 							modal={false}
-							open={this.state.open}
+							open={this.state.dialogOpen}
 							onRequestClose={this.handleClose}
 						>
 							<TextField

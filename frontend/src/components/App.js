@@ -12,6 +12,7 @@ class App extends Component {
         <BrowserRouter >
           <Switch>
             <Route path="/create" component={AddNewPost} />
+            <Route path="/edit/:postId" component={AddNewPost} />
             <Route exact path="/" component={MainPage}/>
             <Route path="/:category/:postId" component={PostDetail} />
             <Route path="/:category" component={MainPage} />

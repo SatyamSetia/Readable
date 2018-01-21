@@ -13,6 +13,10 @@ import FloatingActionButton from "material-ui/FloatingActionButton";
 import ContentAdd from "material-ui/svg-icons/content/add";
 
 class MainPage extends Component {
+	state = {
+		posts: {}
+	}
+
 	renderCategories() {
 		return this.props.categories.map(category => {
 			return (
@@ -36,7 +40,7 @@ class MainPage extends Component {
 	}
 
 	componentDidMount() {
-		this.props.getPosts(this.props.match.url.substr(1));
+		this.props.getPosts(this.props.match.url.substr(1)).then(console.log('fetched'));
 	}
 
 	renderPostList() {
