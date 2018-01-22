@@ -70,3 +70,13 @@ export const voteCommentRequest = (commentId, vote) =>
 			option: vote
 		})
 	}).then(res => res.json())
+
+export const addCommentRequest = (comment) => 
+	fetch(`${url}/comments`, {
+		method: 'POST',
+		headers,
+		body: JSON.stringify({
+			...comment,
+			timestamp: Date.now()
+		})
+	}).then(res => res.json())

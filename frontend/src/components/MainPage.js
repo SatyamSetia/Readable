@@ -14,7 +14,7 @@ import ContentAdd from "material-ui/svg-icons/content/add";
 
 class MainPage extends Component {
 	state = {
-		posts: {}
+		posts: []
 	}
 
 	renderCategories() {
@@ -40,7 +40,7 @@ class MainPage extends Component {
 	}
 
 	componentDidMount() {
-		this.props.getPosts(this.props.match.url.substr(1)).then(console.log('fetched'));
+		this.props.getPosts(this.props.match.url.substr(1));
 	}
 
 	renderPostList() {

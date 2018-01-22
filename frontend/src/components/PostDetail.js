@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import uuid from "uuid";
 
 import CommentDetail from "./CommentDetail";
 import { getPost, votePost } from "../actions/posts";
-import { getAllComments } from "../actions/comments";
+import { getAllComments, addComment } from "../actions/comments";
 
 import AppBar from "material-ui/AppBar";
 import NavigationClose from "material-ui/svg-icons/navigation/close";
@@ -21,9 +22,14 @@ import downvote from "../icons/ic_thumb_down_black_24px.svg";
 import downvoteOutline from "../icons/thumb-down-outline.svg";
 import edit from "../icons/ic_edit_black_24px.svg";
 import deleteIcon from "../icons/ic_delete_black_24px.svg";
+import Snackbar from "material-ui/Snackbar";
 
 class PostList extends Component {
 	state = {
+		commentAuthor: "",
+		commentBody: "",
+		snackbarOpen: false,
+		snackbarMessage: "",
 		dialogOpen: false,
 		upVote: false,
 		upVoteIcon: upvoteOutline,
@@ -97,10 +103,52 @@ class PostList extends Component {
 		this.setState({ dialogOpen: false });
 	};
 
+	handleSubmit = () => {
+		if(!this.validate()) {
+			return this.setState({
+				snackbarOpen: true,
+				snackbarMessage: "Comment fields can not be empty",
+				dialogOpen: false
+			})
+		}
+		this.props
+			.addComment({
+				id: uuid.v4(),
+				body: this.state.commentBody,
+				author: this.state.commentAuthor,
+				parentId: this.props.post.id
+			})
+			.then(() => {
+					this.props.getPost(this.props.match.params.postId);
+					this.props.getAllComments(this.props.match.params.postId);
+				}
+			);
+		this.setState({
+			snackbarOpen: true,
+			snackbarMessage: `${this.state.commentAuthor} says "${this.state.commentBody}"`,
+			dialogOpen: false
+		})
+	};
+
+	handleSnackbarClose = () => {
+		this.setState({
+			snackbarOpen: false
+		});
+	};
+
+	validate() {
+		if(this.state.commentAuthor === '' || this.state.commentBody === ''){
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	componentDidMount() {
 		this.props.getPost(this.props.match.params.postId);
 		this.props.getAllComments(this.props.match.params.postId);
 	}
+
 	render() {
 		const { post, comments } = this.props;
 		console.log(this.props);
@@ -114,7 +162,7 @@ class PostList extends Component {
 			<FlatButton
 				label="Submit"
 				primary={true}
-				onClick={this.handleClose}
+				onClick={this.handleSubmit}
 			/>
 		];
 
@@ -194,17 +242,33 @@ class PostList extends Component {
 							<TextField
 								hintText="Enter your name"
 								floatingLabelText="Name"
+								value={this.state.commentAuthor}
+								onChange={e =>
+									this.setState({
+										commentAuthor: e.target.value
+									})}
 							/>
 							<br />
 							<TextField
 								hintText="Enter comment"
 								floatingLabelText="Comment"
 								fullWidth={true}
+								value={this.state.commentBody}
+								onChange={e =>
+									this.setState({
+										commentBody: e.target.value
+									})}
 							/>
 							<br />
 						</Dialog>
 					</div>
 				</Paper>
+				<Snackbar
+					open={this.state.snackbarOpen}
+					message={this.state.snackbarMessage}
+					autoHideDuration={4000}
+					onRequestClose={this.handleSnackbarClose}
+				/>
 			</div>
 		);
 	}
@@ -221,7 +285,8 @@ function mapDispatchToProps(dispatch) {
 	return {
 		getPost: postId => dispatch(getPost(postId)),
 		votePost: (postId, vote) => dispatch(votePost(postId, vote)),
-		getAllComments: postId => dispatch(getAllComments(postId))
+		getAllComments: postId => dispatch(getAllComments(postId)),
+		addComment: comment => dispatch(addComment(comment))
 	};
 }
 

@@ -1,4 +1,4 @@
-import { fetchAllComments, voteCommentRequest } from '../utils/index';
+import { fetchAllComments, voteCommentRequest, addCommentRequest } from '../utils/index';
 
 export const RECEIVE_ALL_COMMENTS = 'RECEIVE_ALL_COMMENTS';
 export const RECEIVE_COMMENT = 'RECEIVE_COMMENT';
@@ -28,6 +28,14 @@ export function getAllComments(postId) {
 export function voteComment(commentId, vote) {
 	return function(dispatch) {
 		return voteCommentRequest(commentId, vote).then(comment =>
+			dispatch(recieveComment(comment))
+		);
+	}
+}
+
+export function addComment(comment) {
+	return function(dispatch) {
+		return addCommentRequest(comment).then(comment =>
 			dispatch(recieveComment(comment))
 		);
 	}
