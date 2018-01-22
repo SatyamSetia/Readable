@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import _ from "lodash";
 
-import { voteComment } from '../actions/comments';
+import { voteComment, editComment } from "../actions/comments";
 
 import upvote from "../icons/ic_thumb_up_black_24px.svg";
 import upvoteOutline from "../icons/thumb-up-outline.svg";
@@ -10,12 +10,17 @@ import downvote from "../icons/ic_thumb_down_black_24px.svg";
 import downvoteOutline from "../icons/thumb-down-outline.svg";
 import edit from "../icons/ic_edit_black_24px.svg";
 import deleteIcon from "../icons/ic_delete_black_24px.svg";
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
+import TextField from "material-ui/TextField";
 
 class CommentDetail extends Component {
 	state = {
 		comment: {},
+		commentBody: '',
 		upVote: false,
 		upVoteIcon: upvoteOutline,
+		dialogOpen: false,
 		downVote: false,
 		downVoteIcon: downvoteOutline
 	};
@@ -25,7 +30,9 @@ class CommentDetail extends Component {
 			if (this.state.downVote) {
 				this.props
 					.voteComment(commentId, "upVote")
-					.then(comment => this.setState({ comment: comment.payload }));
+					.then(comment =>
+						this.setState({ comment: comment.payload })
+					);
 			}
 			this.props.voteComment(commentId, "upVote").then(comment =>
 				this.setState({
@@ -54,7 +61,9 @@ class CommentDetail extends Component {
 			if (this.state.upVote) {
 				this.props
 					.voteComment(commentId, "downVote")
-					.then(comment => this.setState({ comment: comment.payload }));
+					.then(comment =>
+						this.setState({ comment: comment.payload })
+					);
 			}
 			this.props.voteComment(commentId, "downVote").then(comment =>
 				this.setState({
@@ -78,6 +87,32 @@ class CommentDetail extends Component {
 		}
 	}
 
+	validate() {
+		if(this.state.commentBody === ''){
+			return false;
+		}
+		return true;
+	}
+
+	handleOpen = () => {
+		this.setState({ dialogOpen: true, commentBody: this.state.comment.body });
+	};
+
+	handleClose = () => {
+		this.setState({ dialogOpen: false });
+	};
+
+	handleSubmit = () => {
+		if(!this.validate()){
+			return 
+		}
+		this.props.editComment(this.state.comment.id, this.state.commentBody).then(comment =>
+			this.setState({
+				comment: comment.payload,
+				dialogOpen: false
+			}))
+	}
+
 	componentDidMount() {
 		if (_.isEmpty(this.state.comment)) {
 			this.setState({ comment: this.props.comment });
@@ -86,6 +121,19 @@ class CommentDetail extends Component {
 
 	render() {
 		const { comment } = this.state;
+
+		const actions = [
+			<FlatButton
+				label="Cancel"
+				secondary={true}
+				onClick={this.handleClose}
+			/>,
+			<FlatButton
+				label="Submit"
+				primary={true}
+				onClick={this.handleSubmit}
+			/>
+		];
 
 		return (
 			<div>
@@ -107,7 +155,12 @@ class CommentDetail extends Component {
 						className="icon-button"
 						onClick={() => this.downVoteComment(comment.id)}
 					/>
-					<img src={edit} alt="edit" className="icon-button" />
+					<img
+						src={edit}
+						alt="edit"
+						className="icon-button"
+						onClick={() => {this.handleOpen()}}
+					/>
 					<img
 						src={deleteIcon}
 						alt="delete"
@@ -115,6 +168,31 @@ class CommentDetail extends Component {
 						onClick={() => {}}
 					/>
 				</div>
+				<Dialog
+					title="Edit Comment"
+					actions={actions}
+					modal={false}
+					open={this.state.dialogOpen}
+					onRequestClose={this.handleClose}
+				>
+					<TextField
+						floatingLabelText="Name"
+						value={comment.author}
+						disabled={true}
+					/>
+					<br />
+					<TextField
+						hintText="Enter comment"
+						floatingLabelText="Comment"
+						fullWidth={true}
+						value={this.state.commentBody}
+						onChange={e =>
+							this.setState({
+								commentBody: e.target.value
+							})}
+					/>
+					<br />
+				</Dialog>
 			</div>
 		);
 	}
@@ -122,8 +200,9 @@ class CommentDetail extends Component {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		voteComment: (commentId, vote) => dispatch(voteComment(commentId, vote))
-	}
+		voteComment: (commentId, vote) => dispatch(voteComment(commentId, vote)),
+		editComment: (commentId, commentBody) => dispatch(editComment(commentId, commentBody))
+	};
 }
 
 export default connect(null, mapDispatchToProps)(CommentDetail);

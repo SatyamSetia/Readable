@@ -80,3 +80,13 @@ export const addCommentRequest = (comment) =>
 			timestamp: Date.now()
 		})
 	}).then(res => res.json())
+
+export const editCommentRequest = (commentId, commentBody) =>
+	fetch(`${url}/comments/${commentId}`, {
+		method: 'PUT',
+		headers,
+		body: JSON.stringify({
+			timestamp: Date.now(),
+			body: commentBody
+		})
+	}).then(res => res.json())
