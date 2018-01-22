@@ -62,6 +62,12 @@ export const editPostRequest = (postId,title,body) =>
 		})
 	}).then(res => res.json())
 
+export const deletePostRequest = (postId) =>
+	fetch(`${url}/posts/${postId}`,{
+		method: 'DELETE',
+		headers
+	}).then(res => res.json())
+
 export const voteCommentRequest = (commentId, vote) =>
 	fetch(`${url}/comments/${commentId}`, {
 		method: 'POST',

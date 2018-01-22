@@ -11,10 +11,12 @@ import FlatButton from "material-ui/FlatButton";
 import Subheader from "material-ui/Subheader";
 import FloatingActionButton from "material-ui/FloatingActionButton";
 import ContentAdd from "material-ui/svg-icons/content/add";
+import Snackbar from "material-ui/Snackbar";
 
 class MainPage extends Component {
 	state = {
-		posts: []
+		snackbarOpen: false,
+		snackbarMessage: ""
 	}
 
 	renderCategories() {
@@ -39,6 +41,19 @@ class MainPage extends Component {
 		this.props.getPosts(category.path);
 	}
 
+	handleSnackbarClose = () => {
+		this.setState({
+			snackbarOpen: false
+		});
+	};
+
+	updatePostList(author) {
+		this.props.getPosts(this.props.match.url.substr(1)).then(() => this.setState({
+			snackbarMessage: `A post by ${author} is deleted`,
+			snackbarOpen: true
+		}))
+	}
+
 	componentDidMount() {
 		this.props.getPosts(this.props.match.url.substr(1));
 	}
@@ -48,6 +63,7 @@ class MainPage extends Component {
 			<li key={post.id} className="post-list">
 				<PostListItem
 					post={post}
+					updatePostList = {(author) => this.updatePostList(author)}
 				/>
 			</li>
 		));
@@ -72,6 +88,12 @@ class MainPage extends Component {
 						</FloatingActionButton>
 					</Link>
 				</div>
+				<Snackbar
+					open={this.state.snackbarOpen}
+					message={this.state.snackbarMessage}
+					autoHideDuration={4000}
+					onRequestClose={this.handleSnackbarClose}
+				/>
 			</div>
 		);
 	}

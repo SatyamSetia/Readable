@@ -4,7 +4,8 @@ import {
 	fetchPost,
 	votePostRequest,
 	addPostRequest,
-	editPostRequest
+	editPostRequest,
+	deletePostRequest
 } from "../utils";
 
 export const RECEIVE_ALL_POSTS = "RECEIVE_ALL_POSTS";
@@ -75,6 +76,13 @@ export function addPost(post) {
 export function editPost(postId, title, body) {
 	return function(dispatch) {
 		return editPostRequest(postId, title, body).then(post =>
-			dispatch(recievePost(post)));
-	}
+			dispatch(recievePost(post))
+		);
+	};
+}
+
+export function deletePost(postId) {
+	return function(dispatch) {
+		return deletePostRequest(postId);
+	};
 }

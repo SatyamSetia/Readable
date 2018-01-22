@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import uuid from "uuid";
 
 import CommentDetail from "./CommentDetail";
-import { getPost, votePost } from "../actions/posts";
+import { getPost, votePost, deletePost } from "../actions/posts";
 import { getAllComments, addComment } from "../actions/comments";
 
 import AppBar from "material-ui/AppBar";
@@ -144,6 +144,15 @@ class PostList extends Component {
 		}
 	}
 
+	handleDelete() {
+		this.props
+			.deletePost(this.props.post.id)
+			.then(() => {
+				this.props.history.goBack()
+				//this.props.updatePostList(this.props.post.author)
+			});
+	}
+
 	componentDidMount() {
 		this.props.getPost(this.props.match.params.postId);
 		this.props.getAllComments(this.props.match.params.postId);
@@ -210,7 +219,7 @@ class PostList extends Component {
 							src={deleteIcon}
 							alt="delete"
 							className="icon-button"
-							onClick={() => {}}
+							onClick={() => {this.handleDelete()}}
 						/>
 					</div>
 					<Subheader>Comments</Subheader>
@@ -286,7 +295,8 @@ function mapDispatchToProps(dispatch) {
 		getPost: postId => dispatch(getPost(postId)),
 		votePost: (postId, vote) => dispatch(votePost(postId, vote)),
 		getAllComments: postId => dispatch(getAllComments(postId)),
-		addComment: comment => dispatch(addComment(comment))
+		addComment: comment => dispatch(addComment(comment)),
+		deletePost: (postId) => dispatch(deletePost(postId))
 	};
 }
 

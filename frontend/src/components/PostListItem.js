@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import _ from "lodash";
 
-import { votePost } from "../actions/posts";
+import { votePost, deletePost } from "../actions/posts";
 import open from "../icons/ic_open_in_new_black_18px.svg";
 import upvote from "../icons/ic_thumb_up_black_24px.svg";
 import upvoteOutline from "../icons/thumb-up-outline.svg";
@@ -81,6 +81,12 @@ class PostListItem extends Component {
 		}
 	}
 
+	handleDelete() {
+		this.props
+			.deletePost(this.state.post.id)
+			.then(() => this.props.updatePostList(this.state.post.author));
+	}
+
 	componentDidMount() {
 		if (_.isEmpty(this.state.post)) {
 			this.setState({ post: this.props.post });
@@ -116,11 +122,22 @@ class PostListItem extends Component {
 								className="icon-button"
 								onClick={() => this.downVotePost(post.id)}
 							/>
-							<Link to={`/edit/${post.id}`} >
-								<img src={edit} alt="edit" className="icon-button"/>
+							<Link to={`/edit/${post.id}`}>
+								<img
+									src={edit}
+									alt="edit"
+									className="icon-button"
+								/>
 							</Link>
-							<img src={deleteIcon} alt="delete" className="icon-button" onClick={() => {}} />
-							<Link to={`${post.category}/${post.id}`} >
+							<img
+								src={deleteIcon}
+								alt="delete"
+								className="icon-button"
+								onClick={() => {
+									this.handleDelete();
+								}}
+							/>
+							<Link to={`${post.category}/${post.id}`}>
 								<img
 									src={open}
 									alt="open"
@@ -137,7 +154,8 @@ class PostListItem extends Component {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		votePost: (postId, vote) => dispatch(votePost(postId, vote))
+		votePost: (postId, vote) => dispatch(votePost(postId, vote)),
+		deletePost: (postId) => dispatch(deletePost(postId))
 	};
 }
 
