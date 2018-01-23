@@ -104,12 +104,12 @@ class PostList extends Component {
 	};
 
 	handleSubmit = () => {
-		if(!this.validate()) {
+		if (!this.validate()) {
 			return this.setState({
 				snackbarOpen: true,
 				snackbarMessage: "Comment fields can not be empty",
 				dialogOpen: false
-			})
+			});
 		}
 		this.props
 			.addComment({
@@ -119,15 +119,15 @@ class PostList extends Component {
 				parentId: this.props.post.id
 			})
 			.then(() => {
-					this.props.getPost(this.props.match.params.postId);
-					this.props.getAllComments(this.props.match.params.postId);
-				}
-			);
+				this.props.getPost(this.props.match.params.postId);
+				this.props.getAllComments(this.props.match.params.postId);
+			});
 		this.setState({
 			snackbarOpen: true,
-			snackbarMessage: `${this.state.commentAuthor} says "${this.state.commentBody}"`,
+			snackbarMessage: `${this.state.commentAuthor} says "${this.state
+				.commentBody}"`,
 			dialogOpen: false
-		})
+		});
 	};
 
 	handleSnackbarClose = () => {
@@ -137,7 +137,7 @@ class PostList extends Component {
 	};
 
 	validate() {
-		if(this.state.commentAuthor === '' || this.state.commentBody === ''){
+		if (this.state.commentAuthor === "" || this.state.commentBody === "") {
 			return false;
 		} else {
 			return true;
@@ -145,12 +145,19 @@ class PostList extends Component {
 	}
 
 	handleDelete() {
-		this.props
-			.deletePost(this.props.post.id)
-			.then(() => {
-				this.props.history.goBack()
-				//this.props.updatePostList(this.props.post.author)
-			});
+		this.props.deletePost(this.props.post.id).then(() => {
+			this.props.history.goBack();
+			//this.props.updatePostList(this.props.post.author)
+		});
+	}
+
+	updateCommentList(commentAuthor) {
+		this.props.getPost(this.props.match.params.postId);
+		this.props.getAllComments(this.props.match.params.postId);
+		this.setState({
+			snackbarOpen: true,
+			snackbarMessage: `A comment by ${commentAuthor} is deleted`
+		})
 	}
 
 	componentDidMount() {
@@ -219,7 +226,9 @@ class PostList extends Component {
 							src={deleteIcon}
 							alt="delete"
 							className="icon-button"
-							onClick={() => {this.handleDelete()}}
+							onClick={() => {
+								this.handleDelete();
+							}}
 						/>
 					</div>
 					<Subheader>Comments</Subheader>
@@ -233,7 +242,11 @@ class PostList extends Component {
 										marginBottom: "15px"
 									}}
 								>
-									<CommentDetail comment={comment} />
+									<CommentDetail
+										comment={comment}
+										updateCommentList={(author) =>
+											this.updateCommentList(author)}
+									/>
 								</li>
 							))}
 						</ul>
@@ -296,7 +309,7 @@ function mapDispatchToProps(dispatch) {
 		votePost: (postId, vote) => dispatch(votePost(postId, vote)),
 		getAllComments: postId => dispatch(getAllComments(postId)),
 		addComment: comment => dispatch(addComment(comment)),
-		deletePost: (postId) => dispatch(deletePost(postId))
+		deletePost: postId => dispatch(deletePost(postId))
 	};
 }
 

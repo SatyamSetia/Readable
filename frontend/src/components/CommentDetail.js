@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import _ from "lodash";
 
-import { voteComment, editComment } from "../actions/comments";
+import { voteComment, editComment, deleteComment } from "../actions/comments";
 
 import upvote from "../icons/ic_thumb_up_black_24px.svg";
 import upvoteOutline from "../icons/thumb-up-outline.svg";
@@ -113,6 +113,11 @@ class CommentDetail extends Component {
 			}))
 	}
 
+	handleDelete(author) {
+		this.props.deleteComment(this.state.comment.id).then(() =>
+			this.props.updateCommentList(author))
+	}
+
 	componentDidMount() {
 		if (_.isEmpty(this.state.comment)) {
 			this.setState({ comment: this.props.comment });
@@ -165,7 +170,7 @@ class CommentDetail extends Component {
 						src={deleteIcon}
 						alt="delete"
 						className="icon-button"
-						onClick={() => {}}
+						onClick={() => this.handleDelete(comment.author)}
 					/>
 				</div>
 				<Dialog
@@ -201,7 +206,8 @@ class CommentDetail extends Component {
 function mapDispatchToProps(dispatch) {
 	return {
 		voteComment: (commentId, vote) => dispatch(voteComment(commentId, vote)),
-		editComment: (commentId, commentBody) => dispatch(editComment(commentId, commentBody))
+		editComment: (commentId, commentBody) => dispatch(editComment(commentId, commentBody)),
+		deleteComment: (commentId) => dispatch(deleteComment(commentId))
 	};
 }
 

@@ -2,7 +2,8 @@ import {
 	fetchAllComments,
 	voteCommentRequest,
 	addCommentRequest,
-	editCommentRequest
+	editCommentRequest,
+	deleteCommentRequest
 } from "../utils/index";
 
 export const RECEIVE_ALL_COMMENTS = "RECEIVE_ALL_COMMENTS";
@@ -52,4 +53,10 @@ export function editComment(commentId, commentBody) {
 			dispatch(recieveComment(comment))
 		);
 	};
+}
+
+export function deleteComment(commentId) {
+	return function(dispatch) {
+		return deleteCommentRequest(commentId);
+	}
 }

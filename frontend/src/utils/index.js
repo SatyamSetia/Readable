@@ -96,3 +96,9 @@ export const editCommentRequest = (commentId, commentBody) =>
 			body: commentBody
 		})
 	}).then(res => res.json())
+
+export const deleteCommentRequest = (commentId) =>
+	fetch(`${url}/comments/${commentId}`,{
+		method: 'DELETE',
+		headers
+	}).then(res => res.json())
