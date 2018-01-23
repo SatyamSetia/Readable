@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import PostListItem from "./PostListItem";
+import _ from "lodash";
 
+import PostListItem from "./PostListItem";
 import { getCategories } from "../actions/categories";
 import { getPosts } from "../actions/posts";
 
@@ -12,12 +13,19 @@ import Subheader from "material-ui/Subheader";
 import FloatingActionButton from "material-ui/FloatingActionButton";
 import ContentAdd from "material-ui/svg-icons/content/add";
 import Snackbar from "material-ui/Snackbar";
+import RaisedButton from "material-ui/RaisedButton";
+import Popover from "material-ui/Popover";
+import Menu from "material-ui/Menu";
+import MenuItem from "material-ui/MenuItem";
 
 class MainPage extends Component {
 	state = {
+		posts: [],
 		snackbarOpen: false,
-		snackbarMessage: ""
-	}
+		snackbarMessage: "",
+		popoverOpen: false,
+		sortBy: "ta"
+	};
 
 	renderCategories() {
 		return this.props.categories.map(category => {
@@ -47,23 +55,65 @@ class MainPage extends Component {
 		});
 	};
 
+	handlePopoverClick = event => {
+		event.preventDefault();
+
+		this.setState({
+			popoverOpen: true,
+			anchorEl: event.currentTarget
+		});
+	};
+
+	handlePopoverClose = () => {
+		this.setState({
+			popoverOpen: false
+		});
+	};
+
 	updatePostList(author) {
-		this.props.getPosts(this.props.match.url.substr(1)).then(() => this.setState({
-			snackbarMessage: `A post by ${author} is deleted`,
-			snackbarOpen: true
-		}))
+		this.props.getPosts(this.props.match.url.substr(1)).then(() =>
+			this.setState({
+				snackbarMessage: `A post by ${author} is deleted`,
+				snackbarOpen: true
+			})
+		);
+	}
+
+	sortPost(posts) {
+		switch (this.state.sortBy) {
+			case "ta":
+				return _.sortBy(posts, function(post) {
+					return post.timestamp;
+				});
+			case "td":
+				return _.sortBy(posts, function(post) {
+					return post.timestamp;
+				}).reverse();
+			case "va":
+				return _.sortBy(posts, function(post) {
+					return post.voteScore;
+				});
+			case "vd":
+				return _.sortBy(posts, function(post) {
+					return post.voteScore;
+				}).reverse();
+			default:
+				return posts;
+		}
 	}
 
 	componentDidMount() {
-		this.props.getPosts(this.props.match.url.substr(1));
+		this.props
+			.getPosts(this.props.match.url.substr(1))
+			.then(posts => this.setState({ posts: this.props.posts }));
 	}
 
 	renderPostList() {
-		return this.props.posts.map(post => (
+		return this.sortPost(this.props.posts).map(post => (
 			<li key={post.id} className="post-list">
 				<PostListItem
 					post={post}
-					updatePostList = {(author) => this.updatePostList(author)}
+					updatePostList={author => this.updatePostList(author)}
 				/>
 			</li>
 		));
@@ -81,6 +131,43 @@ class MainPage extends Component {
 				</div>
 				<div>
 					<Subheader>Posts</Subheader>
+					<RaisedButton
+						onClick={this.handlePopoverClick}
+						label="Sort by"
+						className="sort-button"
+					/>
+					<Popover
+						open={this.state.popoverOpen}
+						anchorEl={this.state.anchorEl}
+						anchorOrigin={{
+							horizontal: "left",
+							vertical: "bottom"
+						}}
+						targetOrigin={{ horizontal: "left", vertical: "top" }}
+						onRequestClose={this.handlePopoverClose}
+					>
+						<Menu
+							onChange={(event, value) =>
+								this.setState({ sortBy: value, popoverOpen: false })}
+						>
+							<MenuItem
+								primaryText="Most Recent first"
+								value="td"
+							/>
+							<MenuItem
+								primaryText="Most Recent last"
+								value="ta"
+							/>
+							<MenuItem
+								primaryText="Most Popular first"
+								value="vd"
+							/>
+							<MenuItem
+								primaryText="Most Popular last"
+								value="va"
+							/>
+						</Menu>
+					</Popover>
 					<ul>{this.renderPostList()}</ul>
 					<Link to="/create">
 						<FloatingActionButton className="open">

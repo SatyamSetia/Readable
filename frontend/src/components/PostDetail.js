@@ -187,7 +187,9 @@ class PostList extends Component {
 				<AppBar
 					title="Readable"
 					iconElementLeft={
-						<IconButton onClick={() => this.props.history.goBack()}>
+						<IconButton onClick={() => {
+							this.props.history.goBack()
+						}}>
 							<NavigationClose />
 						</IconButton>
 					}
