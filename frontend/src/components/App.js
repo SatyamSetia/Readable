@@ -9,11 +9,11 @@ class App extends Component {
   render() {
     return (
       <MuiThemeProvider>
-        <BrowserRouter >
+        <BrowserRouter>
           <Switch>
             <Route path="/create" component={AddNewPost} />
-            <Route path="/edit/:postId" component={AddNewPost} />
-            <Route exact path="/" component={MainPage}/>
+            <Route exact path="/edit/:postId" component={AddNewPost} />
+            <Route exact path="/" component={MainPage} />
             <Route path="/:category/:postId" component={PostDetail} />
             <Route path="/:category" component={MainPage} />
           </Switch>

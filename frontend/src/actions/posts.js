@@ -11,7 +11,6 @@ import {
 export const RECEIVE_ALL_POSTS = "RECEIVE_ALL_POSTS";
 export const RECEIVE_CATEGORY_POSTS = "RECEIVE_CATEGORY_POSTS";
 export const RECEIVE_POST = "RECEIVE_POST";
-//export const VOTE_POST = 'VOTE_POST';
 
 export function receiveAllPosts(posts) {
 	return {
@@ -36,7 +35,6 @@ export function receiveCategoryPosts(posts) {
 export function getCategoryPosts(category) {
 	return function(dispatch) {
 		return fetchCategoryPosts(category).then(posts => {
-			console.log("action", posts);
 			dispatch(receiveCategoryPosts(posts));
 		});
 	};

@@ -147,7 +147,6 @@ class PostList extends Component {
 	handleDelete() {
 		this.props.deletePost(this.props.post.id).then(() => {
 			this.props.history.goBack();
-			//this.props.updatePostList(this.props.post.author)
 		});
 	}
 
@@ -157,7 +156,27 @@ class PostList extends Component {
 		this.setState({
 			snackbarOpen: true,
 			snackbarMessage: `A comment by ${commentAuthor} is deleted`
-		})
+		});
+	}
+
+	renderCommentList(comments) {
+		if (comments.length === 0) {
+			return <div>Showing 0 comments</div>;
+		}
+		return comments.map(comment => (
+			<li
+				key={comment.id}
+				style={{
+					listStyleType: "none",
+					marginBottom: "15px"
+				}}
+			>
+				<CommentDetail
+					comment={comment}
+					updateCommentList={author => this.updateCommentList(author)}
+				/>
+			</li>
+		));
 	}
 
 	componentDidMount() {
@@ -167,7 +186,10 @@ class PostList extends Component {
 
 	render() {
 		const { post, comments } = this.props;
-		console.log(this.props);
+
+		if (post === {}) {
+			return <div>Loading...</div>;
+		}
 
 		const actions = [
 			<FlatButton
@@ -187,9 +209,11 @@ class PostList extends Component {
 				<AppBar
 					title="Readable"
 					iconElementLeft={
-						<IconButton onClick={() => {
-							this.props.history.goBack()
-						}}>
+						<IconButton
+							onClick={() => {
+								this.props.history.goBack();
+							}}
+						>
 							<NavigationClose />
 						</IconButton>
 					}
@@ -236,21 +260,7 @@ class PostList extends Component {
 					<Subheader>Comments</Subheader>
 					<div className="comment-section">
 						<ul style={{ paddingLeft: "0px", marginTop: "0px" }}>
-							{comments.map(comment => (
-								<li
-									key={comment.id}
-									style={{
-										listStyleType: "none",
-										marginBottom: "15px"
-									}}
-								>
-									<CommentDetail
-										comment={comment}
-										updateCommentList={(author) =>
-											this.updateCommentList(author)}
-									/>
-								</li>
-							))}
+							{this.renderCommentList(comments)}
 						</ul>
 						<RaisedButton
 							label="Add new Comment"

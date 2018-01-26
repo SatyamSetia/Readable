@@ -20,7 +20,6 @@ import MenuItem from "material-ui/MenuItem";
 
 class MainPage extends Component {
 	state = {
-		posts: [],
 		snackbarOpen: false,
 		snackbarMessage: "",
 		popoverOpen: false,
@@ -109,6 +108,9 @@ class MainPage extends Component {
 	}
 
 	renderPostList() {
+		if(this.props.posts.length===0){
+			return this.renderEmptyPostList();
+		}
 		return this.sortPost(this.props.posts).map(post => (
 			<li key={post.id} className="post-list">
 				<PostListItem
@@ -117,6 +119,10 @@ class MainPage extends Component {
 				/>
 			</li>
 		));
+	}
+
+	renderEmptyPostList() {
+		return <div>No posts in this category</div>
 	}
 
 	render() {

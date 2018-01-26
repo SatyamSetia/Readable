@@ -95,7 +95,6 @@ class PostListItem extends Component {
 
 	render() {
 		const { post } = this.state;
-		console.log("child ", post)
 		return (
 			<div>
 				<Card>

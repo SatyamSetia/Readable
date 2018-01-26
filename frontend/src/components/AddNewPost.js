@@ -46,16 +46,18 @@ class AddNewPost extends Component {
 			});
 		}
 		if (this.state.editMode) {
-			return this.props.editPost(
-				this.props.match.params.postId,
-				this.state.title,
-				this.state.body
-			).then(post =>
-				this.setState({
-					snackbarOpen: true,
-					message: `A post by ${post.payload.author} is updated`
-				})
-			);
+			return this.props
+				.editPost(
+					this.props.match.params.postId,
+					this.state.title,
+					this.state.body
+				)
+				.then(post =>
+					this.setState({
+						snackbarOpen: true,
+						message: `A post by ${post.payload.author} is updated`
+					})
+				);
 		}
 		this.props
 			.addPost({
@@ -75,7 +77,6 @@ class AddNewPost extends Component {
 					body: ""
 				})
 			);
-		//console.log('submit')
 	}
 
 	handleSnackbarClose = () => {
@@ -130,7 +131,6 @@ class AddNewPost extends Component {
 	}
 
 	render() {
-		console.log(this.props);
 		return (
 			<div>
 				<AppBar
