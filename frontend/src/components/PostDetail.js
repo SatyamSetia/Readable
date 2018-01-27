@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import uuid from "uuid";
+import _ from 'lodash';
 
 import CommentDetail from "./CommentDetail";
 import { getPost, votePost, deletePost } from "../actions/posts";
@@ -184,11 +185,33 @@ class PostList extends Component {
 		));
 	}
 
+	renderEmptyPost() {
+		return(
+			<div>
+				<AppBar
+					title="Readable"
+					iconElementLeft={
+						<IconButton
+							onClick={() => {
+								this.props.history.goBack();
+							}}
+						>
+							<NavigationClose />
+						</IconButton>
+					}
+				/>
+				<div  className="error-message">
+					404 - Post not found
+				</div>
+			</div>
+		);
+	}
+
 	render() {
 		const { post, comments } = this.props;
 
-		if (post === {}) {
-			return <div>Loading...</div>;
+		if (_.isEmpty(post)) {
+			return this.renderEmptyPost();
 		}
 
 		const actions = [
