@@ -37,6 +37,11 @@ class PostList extends Component {
 		downVoteIcon: downvoteOutline
 	};
 
+	componentDidMount() {
+		this.props.getPost(this.props.match.params.postId);
+		this.props.getAllComments(this.props.match.params.postId);
+	}
+
 	upVotePost(postId) {
 		if (!this.state.upVote) {
 			if (this.state.downVote) {
@@ -160,7 +165,7 @@ class PostList extends Component {
 	}
 
 	renderCommentList(comments) {
-		if (comments.length === 0) {
+		if (!comments.length) {
 			return <div>Showing 0 comments</div>;
 		}
 		return comments.map(comment => (
@@ -177,11 +182,6 @@ class PostList extends Component {
 				/>
 			</li>
 		));
-	}
-
-	componentDidMount() {
-		this.props.getPost(this.props.match.params.postId);
-		this.props.getAllComments(this.props.match.params.postId);
 	}
 
 	render() {

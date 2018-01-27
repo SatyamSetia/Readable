@@ -26,6 +26,12 @@ class MainPage extends Component {
 		sortBy: "ta"
 	};
 
+	componentDidMount() {
+		this.props
+			.getPosts(this.props.match.url.substr(1))
+			.then(posts => this.setState({ posts: this.props.posts }));
+	}
+
 	renderCategories() {
 		return this.props.categories.map(category => {
 			return (
@@ -101,14 +107,8 @@ class MainPage extends Component {
 		}
 	}
 
-	componentDidMount() {
-		this.props
-			.getPosts(this.props.match.url.substr(1))
-			.then(posts => this.setState({ posts: this.props.posts }));
-	}
-
 	renderPostList() {
-		if(this.props.posts.length===0){
+		if (this.props.posts.length === 0) {
 			return this.renderEmptyPostList();
 		}
 		return this.sortPost(this.props.posts).map(post => (
@@ -122,7 +122,7 @@ class MainPage extends Component {
 	}
 
 	renderEmptyPostList() {
-		return <div>No posts in this category</div>
+		return <div>No posts in this category</div>;
 	}
 
 	render() {
@@ -154,7 +154,10 @@ class MainPage extends Component {
 					>
 						<Menu
 							onChange={(event, value) =>
-								this.setState({ sortBy: value, popoverOpen: false })}
+								this.setState({
+									sortBy: value,
+									popoverOpen: false
+								})}
 						>
 							<MenuItem
 								primaryText="Most Recent first"

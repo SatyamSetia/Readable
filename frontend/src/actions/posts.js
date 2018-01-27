@@ -44,7 +44,7 @@ export function getPosts(category) {
 	return category ? getCategoryPosts(category) : getAllPosts();
 }
 
-export function recievePost(post) {
+export function receivePost(post) {
 	return {
 		type: RECEIVE_POST,
 		payload: post
@@ -53,28 +53,28 @@ export function recievePost(post) {
 
 export function getPost(postId) {
 	return function(dispatch) {
-		return fetchPost(postId).then(post => dispatch(recievePost(post)));
+		return fetchPost(postId).then(post => dispatch(receivePost(post)));
 	};
 }
 
 export function votePost(postId, vote) {
 	return function(dispatch) {
 		return votePostRequest(postId, vote).then(post =>
-			dispatch(recievePost(post))
+			dispatch(receivePost(post))
 		);
 	};
 }
 
 export function addPost(post) {
 	return function(dispatch) {
-		return addPostRequest(post).then(post => dispatch(recievePost(post)));
+		return addPostRequest(post).then(post => dispatch(receivePost(post)));
 	};
 }
 
 export function editPost(postId, title, body) {
 	return function(dispatch) {
 		return editPostRequest(postId, title, body).then(post =>
-			dispatch(recievePost(post))
+			dispatch(receivePost(post))
 		);
 	};
 }

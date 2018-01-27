@@ -28,6 +28,24 @@ class AddNewPost extends Component {
 		heading: ""
 	};
 
+	componentDidMount() {
+		if (this.props.match.params.postId) {
+			this.props.getPost(this.props.match.params.postId).then(post => {
+				const { category, author, title, body } = post.payload;
+				this.setState({
+					category,
+					author,
+					title,
+					body,
+					heading: "Edit Post",
+					editMode: true
+				});
+			});
+		} else {
+			this.setState({ heading: "Add new Post" });
+		}
+	}
+
 	validate() {
 		const { category, author, title, body } = this.state;
 		if (category === "" || author === "" || title === "" || body === "") {
@@ -111,23 +129,6 @@ class AddNewPost extends Component {
 				/>
 			);
 		});
-	}
-
-	componentDidMount() {
-		if (this.props.match.params.postId) {
-			this.props.getPost(this.props.match.params.postId).then(post =>
-				this.setState({
-					category: post.payload.category,
-					author: post.payload.author,
-					title: post.payload.title,
-					body: post.payload.body,
-					heading: "Edit Post",
-					editMode: true
-				})
-			);
-		} else {
-			this.setState({ heading: "Add new Post" });
-		}
 	}
 
 	render() {

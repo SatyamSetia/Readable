@@ -23,6 +23,12 @@ class PostListItem extends Component {
 		downVoteIcon: downvoteOutline
 	};
 
+	componentDidMount() {
+		if (_.isEmpty(this.state.post)) {
+			this.setState({ post: this.props.post });
+		}
+	}
+
 	upVotePost(postId) {
 		if (!this.state.upVote) {
 			if (this.state.downVote) {
@@ -87,26 +93,20 @@ class PostListItem extends Component {
 			.then(() => this.props.updatePostList(this.state.post.author));
 	}
 
-	componentDidMount() {
-		if (_.isEmpty(this.state.post)) {
-			this.setState({ post: this.props.post });
-		}
-	}
-
 	render() {
-		const { post } = this.state;
+		const { title, author, voteScore, commentCount, id, category } = this.state.post;
 		return (
 			<div>
 				<Card>
 					<CardHeader
-						title={post.title}
-						subtitle={post.author}
+						title={title}
+						subtitle={author}
 						actAsExpander={false}
 						showExpandableButton={false}
 					/>
 					<CardActions>
 						<div className="count">
-							{post.voteScore} votes, {post.commentCount} comments
+							{voteScore} votes, {commentCount} comments
 						</div>
 						<hr style={{ opacity: "0.2" }} />
 						<div className="button-section">
@@ -114,15 +114,15 @@ class PostListItem extends Component {
 								src={this.state.upVoteIcon}
 								alt="upvote"
 								className="icon-button"
-								onClick={() => this.upVotePost(post.id)}
+								onClick={() => this.upVotePost(id)}
 							/>
 							<img
 								src={this.state.downVoteIcon}
 								alt="downvote"
 								className="icon-button"
-								onClick={() => this.downVotePost(post.id)}
+								onClick={() => this.downVotePost(id)}
 							/>
-							<Link to={`/edit/${post.id}`}>
+							<Link to={`/edit/${id}`}>
 								<img
 									src={edit}
 									alt="edit"
@@ -137,7 +137,7 @@ class PostListItem extends Component {
 									this.handleDelete();
 								}}
 							/>
-							<Link to={`${post.category}/${post.id}`}>
+							<Link to={`${category}/${id}`}>
 								<img
 									src={open}
 									alt="open"
@@ -155,7 +155,7 @@ class PostListItem extends Component {
 function mapDispatchToProps(dispatch) {
 	return {
 		votePost: (postId, vote) => dispatch(votePost(postId, vote)),
-		deletePost: (postId) => dispatch(deletePost(postId))
+		deletePost: postId => dispatch(deletePost(postId))
 	};
 }
 

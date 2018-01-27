@@ -25,6 +25,12 @@ class CommentDetail extends Component {
 		downVoteIcon: downvoteOutline
 	};
 
+	componentDidMount() {
+		if (_.isEmpty(this.state.comment)) {
+			this.setState({ comment: this.props.comment });
+		}
+	}
+
 	upVoteComment(commentId) {
 		if (!this.state.upVote) {
 			if (this.state.downVote) {
@@ -116,12 +122,6 @@ class CommentDetail extends Component {
 	handleDelete(author) {
 		this.props.deleteComment(this.state.comment.id).then(() =>
 			this.props.updateCommentList(author))
-	}
-
-	componentDidMount() {
-		if (_.isEmpty(this.state.comment)) {
-			this.setState({ comment: this.props.comment });
-		}
 	}
 
 	render() {
