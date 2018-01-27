@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import uuid from "uuid";
 
 import { getCategories } from "../actions/categories";
 import { addPost, getPost, editPost } from "../actions/posts";
@@ -54,6 +53,16 @@ class AddNewPost extends Component {
 		return true;
 	}
 
+	idGenerator() {
+	  	function s4() {
+	    	return Math.floor((1 + Math.random()) * 0x10000)
+	      		.toString(16)
+	      		.substring(1);
+	  	}
+	  	return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+	    	s4() + '-' + s4() + s4() + s4();
+	}
+
 	handleChange = (event, index, category) => this.setState({ category });
 
 	handleSubmit() {
@@ -79,7 +88,7 @@ class AddNewPost extends Component {
 		}
 		this.props
 			.addPost({
-				id: uuid.v4(),
+				id: this.idGenerator(),
 				category: this.state.category,
 				title: this.state.title,
 				author: this.state.author,

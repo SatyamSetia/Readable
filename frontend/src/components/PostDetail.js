@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import uuid from "uuid";
 import _ from 'lodash';
 
 import CommentDetail from "./CommentDetail";
@@ -119,7 +118,7 @@ class PostList extends Component {
 		}
 		this.props
 			.addComment({
-				id: uuid.v4(),
+				id: this.idGenerator(),
 				body: this.state.commentBody,
 				author: this.state.commentAuthor,
 				parentId: this.props.post.id
@@ -148,6 +147,16 @@ class PostList extends Component {
 		} else {
 			return true;
 		}
+	}
+
+	idGenerator() {
+	  	function s4() {
+	    	return Math.floor((1 + Math.random()) * 0x10000)
+	      		.toString(16)
+	      		.substring(1);
+	  	}
+	  	return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+	    	s4() + '-' + s4() + s4() + s4();
 	}
 
 	handleDelete() {
