@@ -20,6 +20,7 @@ import MenuItem from "material-ui/MenuItem";
 
 class MainPage extends Component {
 	state = {
+		posts: [],
 		snackbarOpen: false,
 		snackbarMessage: "",
 		popoverOpen: false,
@@ -51,7 +52,9 @@ class MainPage extends Component {
 
 	handleCategoryClick(category) {
 		this.props.history.push(category.path);
-		this.props.getPosts(category.path);
+		this.props
+			.getPosts(category.path)
+			.then(posts => this.setState({ posts: this.props.posts }));
 	}
 
 	handleSnackbarClose = () => {
@@ -78,6 +81,7 @@ class MainPage extends Component {
 	updatePostList(author) {
 		this.props.getPosts(this.props.match.url.substr(1)).then(() =>
 			this.setState({
+				posts: this.props.posts,
 				snackbarMessage: `A post by ${author} is deleted`,
 				snackbarOpen: true
 			})
@@ -108,10 +112,10 @@ class MainPage extends Component {
 	}
 
 	renderPostList() {
-		if (this.props.posts.length === 0) {
+		if (this.state.posts.length === 0) {
 			return this.renderEmptyPostList();
 		}
-		return this.sortPost(this.props.posts).map(post => (
+		return this.sortPost(this.state.posts).map(post => (
 			<li key={post.id} className="post-list">
 				<PostListItem
 					post={post}
