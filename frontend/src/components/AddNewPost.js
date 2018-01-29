@@ -126,6 +126,7 @@ class AddNewPost extends Component {
 	}
 
 	renderCategoryMenu(categories) {
+		// Don't forget to add a new category object {name: 'all', path: ''}, to render all the categories here.
 		return categories.map((category, index) => {
 			return (
 				<MenuItem
