@@ -212,6 +212,10 @@ class PostList extends Component {
 				<div  className="error-message">
 					404 - Post not found
 				</div>
+				<div className="error-handler">
+					<Link to="/">Click here </Link>
+					to return to the home page.
+				</div>
 			</div>
 		);
 	}
