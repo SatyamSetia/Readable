@@ -1,4 +1,4 @@
-import { RECEIVE_ALL_COMMENTS, RECEIVE_COMMENT } from '../actions/comments';
+import { RECEIVE_ALL_COMMENTS, RECEIVE_COMMENT } from '../actions/types';
 
 export function fetchAllComments(state=[], action){
 	switch(action.type){

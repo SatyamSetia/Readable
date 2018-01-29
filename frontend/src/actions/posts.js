@@ -8,9 +8,11 @@ import {
 	deletePostRequest
 } from "../utils";
 
-export const RECEIVE_ALL_POSTS = "RECEIVE_ALL_POSTS";
-export const RECEIVE_CATEGORY_POSTS = "RECEIVE_CATEGORY_POSTS";
-export const RECEIVE_POST = "RECEIVE_POST";
+import {
+	RECEIVE_POST,
+	RECEIVE_ALL_POSTS,
+	RECEIVE_CATEGORY_POSTS
+} from "./types";
 
 export function receiveAllPosts(posts) {
 	return {

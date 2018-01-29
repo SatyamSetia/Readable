@@ -6,8 +6,7 @@ import {
 	deleteCommentRequest
 } from "../utils/index";
 
-export const RECEIVE_ALL_COMMENTS = "RECEIVE_ALL_COMMENTS";
-export const RECEIVE_COMMENT = "RECEIVE_COMMENT";
+import { RECEIVE_COMMENT, RECEIVE_ALL_COMMENTS } from "./types";
 
 export function receiveAllComments(comments) {
 	return {
@@ -58,5 +57,5 @@ export function editComment(commentId, commentBody) {
 export function deleteComment(commentId) {
 	return function(dispatch) {
 		return deleteCommentRequest(commentId);
-	}
+	};
 }

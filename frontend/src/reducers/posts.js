@@ -1,4 +1,4 @@
-import { RECEIVE_ALL_POSTS, RECEIVE_CATEGORY_POSTS, RECEIVE_POST } from "../actions/posts";
+import { RECEIVE_ALL_POSTS, RECEIVE_CATEGORY_POSTS, RECEIVE_POST } from "../actions/types";
 
 export function fetchPosts(state = [], action) {
 	let returnValue = [];
