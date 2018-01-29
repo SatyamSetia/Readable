@@ -37,7 +37,7 @@ class PostList extends Component {
 		downVoteIcon: downvoteOutline
 	};
 
-	componentDidMount() {
+	componentDidMount() {                   
 		this.props.getPost(this.props.match.params.postId);
 		this.props.getAllComments(this.props.match.params.postId);
 	}
@@ -113,7 +113,9 @@ class PostList extends Component {
 			return this.setState({
 				snackbarOpen: true,
 				snackbarMessage: "Comment fields can not be empty",
-				dialogOpen: false
+				dialogOpen: false,
+				commentAuthor: "",
+				commentBody: ""
 			});
 		}
 		this.props
@@ -131,7 +133,9 @@ class PostList extends Component {
 			snackbarOpen: true,
 			snackbarMessage: `${this.state.commentAuthor} says "${this.state
 				.commentBody}"`,
-			dialogOpen: false
+			dialogOpen: false,
+			commentAuthor: "",
+			commentBody: ""
 		});
 	};
 
