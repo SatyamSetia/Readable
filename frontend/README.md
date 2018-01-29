@@ -1,4 +1,4 @@
-# Readable Project
+# Readable Frontend
 
 This project is completed as a part of React & Redux course in React Nanodegree from Udacity. It has adding post, comments on post, upvoting and downvoting on both posts and comments like features. API requests are responded by ../api-server (Provided by Udacity)
 
@@ -47,7 +47,7 @@ To launch this project on your machine:
 
 ## Backend Server
 
-To simplify your development process, we've provided a backend server for you to develop against. The provided file [`server.js`](../api-server/server.js) contains the methods you will need to perform necessary operations on the backend.
+To simplify the development process, A backend server was provided to develop against. The provided file [`server.js`](../api-server/server.js) contains the methods you will need to perform necessary operations on the backend.
 
 ## Important
 The backend API provides a fixed set of categories which can be found in [categories.js](../api-server/categories.js). New Categories can added from here.

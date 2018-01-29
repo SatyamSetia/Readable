@@ -1,21 +1,55 @@
-# Readable API Server
+# Readable Project
 
-This is the starter project for the final assessment project for Udacity's Redux course where you will build a content and comment web app. Users will be able to post content to predefined categories, comment on their posts and other users' posts, and vote on posts and comments. Users will also be able to edit and delete posts and comments.
+This project is completed as a part of React & Redux course in React Nanodegree from Udacity. It has adding post, comments on post, upvoting and downvoting on both posts and comments like features.
 
-This repository includes the code for the backend API Server that you'll use to develop and interact with the front-end portion of the project.
+This repository includes the code for the backend [`API Server`](./api-server) and [`front-end`](./frontend) portion of the project.
 
-## Start Developing
+## What You're Getting
+```bash
+├── README.md - This file.
+├── api-server # contains code for handling backend api request.
+└── frontend # contains React-Redux part of project.
+```
 
-To get started developing right away:
+## Instructions to launch
+
+To launch the project right away:
 
 * Install and start the API server
     - `cd api-server`
+    - add a new add category object as shown in Important section below.
     - `npm install`
     - `node server`
-* In another terminal window, use Create React App to scaffold out the front-end
-    - `create-react-app frontend`
-    - `cd frontend`
+* In another terminal window
+    - `npm install`
+    - `npm install --save react-router-dom react-redux redux redux-thunk material-ui lodash`
     - `npm start`
+
+## Important
+
+The backend API provides a fixed set of categories which can be found in [categories.js](./api-server/categories.js). For the project to have required functionalities a new category object with name: 'all' and path: '' must be added to default categories as follows:
+```bash
+The new categories array should look like this:
+
+categories: [
+      {
+        name: 'all',
+        path: ''
+      },
+      {
+        name: 'react',
+        path: 'react'
+      },
+      {
+        name: 'redux',
+        path: 'redux'
+      },
+      {
+        name: 'udacity',
+        path: 'udacity'
+      }
+  ]
+```
 
 ## API Server
 
