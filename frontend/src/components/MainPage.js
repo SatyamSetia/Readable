@@ -39,7 +39,7 @@ class MainPage extends Component {
 			return (
 				<li
 					key={category.name}
-					style={{ float: "left", listStyleType: "none" }}
+					className="category-menu"
 				>
 					<FlatButton
 						label={category.name}

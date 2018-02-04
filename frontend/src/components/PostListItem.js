@@ -108,7 +108,7 @@ class PostListItem extends Component {
 						<div className="count">
 							{voteScore} votes, {commentCount} comments
 						</div>
-						<hr style={{ opacity: "0.2" }} />
+						<hr className="divider" />
 						<div className="button-section">
 							<img
 								src={this.state.upVoteIcon}

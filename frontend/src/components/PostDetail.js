@@ -185,10 +185,7 @@ class PostList extends Component {
 		return comments.map(comment => (
 			<li
 				key={comment.id}
-				style={{
-					listStyleType: "none",
-					marginBottom: "15px"
-				}}
+				className="comment-list-item"
 			>
 				<CommentDetail
 					comment={comment}
@@ -267,7 +264,7 @@ class PostList extends Component {
 					<div className="count" style={{ marginLeft: "0px" }}>
 						{post.voteScore} votes, {post.commentCount} comments
 					</div>
-					<hr style={{ opacity: "0.2" }} />
+					<hr className="divider" />
 					<div className="button-section">
 						<img
 							src={this.state.upVoteIcon}
@@ -299,7 +296,7 @@ class PostList extends Component {
 					</div>
 					<Subheader>Comments</Subheader>
 					<div className="comment-section">
-						<ul style={{ paddingLeft: "0px", marginTop: "0px" }}>
+						<ul className="comment-list">
 							{this.renderCommentList(comments)}
 						</ul>
 						<RaisedButton

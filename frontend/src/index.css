@@ -10,10 +10,19 @@ body {
 	list-style-type: none;
 }
 
+.category-menu {
+	float: left;
+	list-style-type: none;
+}
+
 .count {
 	color: #acb0b0;
 	font-size: 11px;
 	margin-left: 10px;
+}
+
+.divider {
+	opacity: 0.2;
 }
 
 .open {
@@ -51,6 +60,16 @@ body {
 
 .comment-section{
 	margin: 0 15px 5px 15px;
+}
+
+.comment-list{
+	padding-left: 0px;
+	margin-top: 0px;
+}
+
+.comment-list-item{
+	margin-bottom: 15px;
+	list-style-type: none;
 }
 
 .comment-author{
